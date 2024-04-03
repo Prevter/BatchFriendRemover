@@ -72,10 +72,12 @@ class $modify(FriendsListExt, FriendsProfilePage) {
                 this, menu_selector(FriendsListExt::onBatchRemove)
         );
         myButton->setPosition({0, -269.f});
+        myButton->setID("batchremover-delete-btn");
 
         g_selectAll = CCMenuItemToggler::createWithStandardSprites(this, menu_selector(FriendsListExt::onSelectAll),
                                                                    0.7f);
         g_selectAll->setPosition({40, -258.f});
+        g_selectAll->setID("batchremover-select-all");
 
         auto *mainLayer = getChildOfType<CCLayer>(this, 0);
         auto *menu = getChildOfType<CCMenu>(mainLayer, 0);
@@ -85,8 +87,9 @@ class $modify(FriendsListExt, FriendsProfilePage) {
         // Add "All" label
         auto allLabel = CCLabelBMFont::create("All", "goldFont.fnt");
         allLabel->setScale(0.55f);
-        allLabel->setPosition({143.f, 38.f});
-        mainLayer->addChild(allLabel);
+        allLabel->setPosition({69.f, -257.f});
+        allLabel->setID("batchremover-all-label");
+        menu->addChild(allLabel);
 
         return true;
     }
@@ -197,10 +200,18 @@ class $modify(GJUserCellExt, GJUserCell) {
         // Add checkbox
         auto checkbox = CCMenuItemToggler::createWithStandardSprites(
                 this, menu_selector(GJUserCellExt::onCheckbox), 0.65f);
-        checkbox->setPosition({-35, -138});
+        checkbox->setID("batchremover-user-checkbox");
 
         auto *mainLayer = getChildOfType<CCLayer>(this, 1);
         auto *menu = getChildOfType<CCMenu>(mainLayer, 0);
+
+        auto leftBtn = getChildOfType<CCMenuItemSpriteExtra>(menu, 1);
+        auto leftBtnContentSize = leftBtn->getContentSize();
+        checkbox->setPosition({
+            leftBtn->getPositionX() - leftBtnContentSize.width / 2 - 15.f,
+            leftBtn->getPositionY()
+        });
+
         menu->addChild(checkbox);
 
         // Save checkbox for later
